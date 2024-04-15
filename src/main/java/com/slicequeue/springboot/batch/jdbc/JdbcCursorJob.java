@@ -9,7 +9,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemWriter;
@@ -18,13 +17,14 @@ import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuild
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 
 import javax.sql.DataSource;
 
-@EnableBatchProcessing
-@SpringBootApplication
+//@EnableBatchProcessing
+//@SpringBootApplication
 public class JdbcCursorJob {
 
     @Autowired
@@ -44,7 +44,7 @@ public class JdbcCursorJob {
     @Bean
     public JdbcCursorItemReader<Customer> customerJdbcCursorItemReader(DataSource dataSource) {
         return new JdbcCursorItemReaderBuilder<Customer>()
-                .name("customerItemReader")
+                .name("customerJdbcCursorItemReader")
                 .dataSource(dataSource)                         // 1. 실행할 데이터 소스
                 .sql("select * from customer where city = ?")   // 2. 실행할 쿼리
                 .rowMapper(new CustomerRowMapper())             // 3. 사용할 RowMapper 구현체
@@ -75,7 +75,7 @@ public class JdbcCursorJob {
 
     @Bean
     public Job job() {
-        return this.jobBuilderFactory.get("job")
+        return this.jobBuilderFactory.get("job-jdbc-cursor")
                 .validator(validator())
                 .incrementer(new RunIdIncrementer())
                 .start(copyFileStep())
