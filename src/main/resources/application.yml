@@ -7,3 +7,17 @@ spring:
 
   batch:
     initialize-schema: always
+
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+        batch:
+          item:
+            database: DEBUG
+
+
