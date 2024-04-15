@@ -26,8 +26,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@EnableBatchProcessing
-@SpringBootApplication
+//@EnableBatchProcessing
+//@SpringBootApplication
 public class JdbcPagingJob {
 
     @Autowired
@@ -73,7 +73,8 @@ public class JdbcPagingJob {
         factoryBean.setSelectClause("select *");            // select 절
         factoryBean.setFromClause("from Customer");         // from 절
         factoryBean.setWhereClause("where city = :city");   // where 절
-        factoryBean.setSortKey("lastName");                 // 정렬 키값
+        factoryBean.setSortKey("lastName");                 // 정렬 키값 - 정렬 키값은 ResultSet 내에서 중복되지 않아야함
+        // why? SQL 쿼리를 생성하는 과정에서 정렬 키를 사용하기 때문.
 
         return factoryBean;
     }
